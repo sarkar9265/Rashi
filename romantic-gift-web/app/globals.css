@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-pink-100 text-gray-800 m-0 p-0 font-sans;
+    overflow-x: hidden;
+  }
+}
+
+.app-container {
+  @apply min-h-screen w-full flex flex-col relative;
+  background: radial-gradient(circle at center, #fce4ec 0%, #f8bbd0 100%);
+}
+
+.glass-panel {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl;
+}
+
+.polaroid {
+  @apply bg-white p-3 pb-12 shadow-lg rounded-sm transform transition-transform;
+}
+
+.btn-primary {
+  @apply bg-white text-pink-500 font-bold py-3 px-6 rounded-full shadow-lg hover:bg-pink-50 hover:scale-105 transition-all active:scale-95;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1); 
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.5); 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.8); 
+}
