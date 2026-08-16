@@ -384,7 +384,7 @@ body {
 }
 
 .hero-section {
-    background: var(--night-gradient);
+    background: transparent;
     position: relative;
 }
 
@@ -566,7 +566,7 @@ body {
    CANDLE SECTION
    ============================================ */
 .candle-section {
-    background: linear-gradient(180deg, var(--midnight) 0%, #1a1a3e 50%, #2a1a4a 100%);
+    background: transparent;
     padding: 2rem 1rem;
 }
 
@@ -886,7 +886,7 @@ body {
    MESSAGE SECTION - Retro Brown Paper
    ============================================ */
 .message-section {
-    background: linear-gradient(180deg, #2a1a4a 0%, #1c1410 30%, #2c1e14 50%, #1c1410 70%, #0f1a30 100%);
+    background: transparent;
     padding: 4rem 1rem;
 }
 
@@ -934,26 +934,28 @@ body {
             rgba(160, 110, 60, 0.02) 5px,
             rgba(160, 110, 60, 0.02) 6px
         ),
-        /* Base parchment color */
+        /* Base parchment color - Transparent */
         linear-gradient(
             170deg,
-            #D4B896 0%,
-            #C9A87C 15%,
-            #DEC5A0 30%,
-            #C4A276 50%,
-            #D8BC96 70%,
-            #CAAA80 85%,
-            #D0B48C 100%
+            rgba(212, 184, 150, 0.7) 0%,
+            rgba(201, 168, 124, 0.7) 15%,
+            rgba(222, 197, 160, 0.7) 30%,
+            rgba(196, 162, 118, 0.7) 50%,
+            rgba(216, 188, 150, 0.7) 70%,
+            rgba(202, 170, 128, 0.7) 85%,
+            rgba(208, 180, 140, 0.7) 100%
         );
     border-radius: 6px;
     padding: 2.8rem 2.2rem;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     box-shadow:
         0 4px 20px rgba(0, 0, 0, 0.5),
-        inset 0 0 80px rgba(139, 90, 43, 0.15),
-        inset 0 0 20px rgba(0, 0, 0, 0.05);
-    border: none;
+        inset 0 0 80px rgba(139, 90, 43, 0.25),
+        inset 0 0 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(212, 184, 150, 0.3);
     /* Slight rotation for natural feel */
     transform: rotate(-0.5deg);
 }
@@ -1056,43 +1058,45 @@ body {
    GALLERY / MEMORIES CAROUSEL SECTION
    ============================================ */
 .gallery-section {
-    background: linear-gradient(180deg, #0f1a30 0%, var(--dark-bg) 50%, #0a0f1e 100%);
+    background: transparent;
     padding: 4rem 1rem;
     min-height: auto;
     position: relative;
     overflow: hidden;
 }
 
-.gallery-background {
-    position: absolute;
+.global-background {
+    position: fixed;
     inset: 0;
-    z-index: 1;
+    z-index: -10;
     pointer-events: none;
     overflow: hidden;
-    opacity: 0.25; /* Keep it subtle */
+    opacity: 0.8; /* Increased visibility */
+    background: var(--night-gradient);
 }
 
-.gallery-background::after {
+.global-background::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, #0f1a30 0%, transparent 20%, transparent 80%, #0a0f1e 100%);
+    background: linear-gradient(180deg, rgba(15, 26, 48, 0.8) 0%, rgba(10, 15, 30, 0.3) 30%, rgba(10, 15, 30, 0.3) 70%, rgba(15, 26, 48, 0.8) 100%);
     z-index: 2;
 }
 
-.gallery-bg-item {
+.global-bg-item {
     position: absolute;
     width: 25%;
+    min-width: 200px;
     height: auto;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 12px;
     opacity: 0;
     transform: scale(0.9) rotate(0deg);
     transition: all 4s ease-in-out;
-    filter: blur(2px) grayscale(30%);
+    /* Removed blur and grayscale so they are fully visible */
 }
 
-.gallery-bg-item.show {
+.global-bg-item.show {
     opacity: 1;
     transform: scale(1.1) rotate(var(--rot));
 }
@@ -1117,35 +1121,7 @@ body {
     z-index: 2;
 }
 
-.gallery-filter {
-    display: flex;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-    position: relative;
-    z-index: 2;
-}
 
-.filter-btn {
-    padding: 8px 24px;
-    border: 1px solid rgba(126, 200, 227, 0.2);
-    border-radius: 30px;
-    background: transparent;
-    color: rgba(184, 226, 242, 0.6);
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.filter-btn:hover,
-.filter-btn.active {
-    background: var(--sky-gradient);
-    color: var(--white);
-    border-color: transparent;
-    box-shadow: 0 4px 15px rgba(126, 200, 227, 0.3);
-}
 
 /* --- Multi-Card Carousel --- */
 .memories-carousel {
@@ -1211,26 +1187,7 @@ body {
     display: block;
 }
 
-.carousel-card .card-play-icon {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    width: 36px;
-    height: 36px;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(6px);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-}
 
-.carousel-card .card-play-icon svg {
-    width: 16px;
-    height: 16px;
-    fill: var(--white);
-}
 
 /* Shimmer glow on viewport */
 .carousel-viewport::after {

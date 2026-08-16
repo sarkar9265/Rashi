@@ -29,37 +29,6 @@ const MEDIA_FILES = {
         'Snapchat-2043952258.jpg', 'Snapchat-2051103694.jpg', 'Snapchat-2080003889.jpg',
         'Snapchat-2087134660.jpg', 'Snapchat-2095753832.jpg', 'Snapchat-2122209144.jpg',
         'Snapchat-2129473689.jpg'
-    ],
-    videos: [
-        'Snapchat-32594240.mp4', 'Snapchat-42041903.mp4', 'Snapchat-53579753.mp4',
-        'Snapchat-65813257.mp4', 'Snapchat-127973462.mp4', 'Snapchat-132539822.mp4',
-        'Snapchat-161228893.mp4', 'Snapchat-175902018.mp4', 'Snapchat-193685859.mp4',
-        'Snapchat-213083361.mp4', 'Snapchat-248515427.mp4', 'Snapchat-272440177.mp4',
-        'Snapchat-286182358.mp4', 'Snapchat-308935795.mp4', 'Snapchat-319377321.mp4',
-        'Snapchat-323956737.mp4', 'Snapchat-368634555.mp4', 'Snapchat-466390991.mp4',
-        'Snapchat-500479901.mp4', 'Snapchat-555501477.mp4', 'Snapchat-570505905.mp4',
-        'Snapchat-595117110.mp4', 'Snapchat-595489806.mp4', 'Snapchat-603863612.mp4',
-        'Snapchat-620241851.mp4', 'Snapchat-633577008.mp4', 'Snapchat-712490315.mp4',
-        'Snapchat-716368910.mp4', 'Snapchat-720117454.mp4', 'Snapchat-728203001.mp4',
-        'Snapchat-775248717.mp4', 'Snapchat-784539044.mp4', 'Snapchat-829279322.mp4',
-        'Snapchat-851880446.mp4', 'Snapchat-859525539.mp4', 'Snapchat-865257024.mp4',
-        'Snapchat-875668163.mp4', 'Snapchat-907830300.mp4', 'Snapchat-909555228.mp4',
-        'Snapchat-945274727.mp4', 'Snapchat-946045381.mp4', 'Snapchat-987025563.mp4',
-        'Snapchat-989411905.mp4', 'Snapchat-1023176324.mp4', 'Snapchat-1027532214.mp4',
-        'Snapchat-1100086514.mp4', 'Snapchat-1107356445.mp4', 'Snapchat-1118302452.mp4',
-        'Snapchat-1151076083.mp4', 'Snapchat-1181547471.mp4', 'Snapchat-1212993059.mp4',
-        'Snapchat-1228487117.mp4', 'Snapchat-1249735163.mp4', 'Snapchat-1259381334.mp4',
-        'Snapchat-1265528815.mp4', 'Snapchat-1301898227.mp4', 'Snapchat-1329971113.mp4',
-        'Snapchat-1345529118.mp4', 'Snapchat-1373416412.mp4', 'Snapchat-1475183806.mp4',
-        'Snapchat-1519635663.mp4', 'Snapchat-1526388712.mp4', 'Snapchat-1531207930.mp4',
-        'Snapchat-1541899220.mp4', 'Snapchat-1560800794.mp4', 'Snapchat-1583655889.mp4',
-        'Snapchat-1600945634.mp4', 'Snapchat-1627893259.mp4', 'Snapchat-1638041685.mp4',
-        'Snapchat-1648922597.mp4', 'Snapchat-1660165394.mp4', 'Snapchat-1662876465.mp4',
-        'Snapchat-1726128129.mp4', 'Snapchat-1765289644.mp4', 'Snapchat-1775011736.mp4',
-        'Snapchat-1817527880.mp4', 'Snapchat-1894276473.mp4', 'Snapchat-1911125007.mp4',
-        'Snapchat-1917601777.mp4', 'Snapchat-1945973652.mp4', 'Snapchat-1966120069.mp4',
-        'Snapchat-1980731250.mp4', 'Snapchat-2006617593.mp4', 'Snapchat-2074661393.mp4',
-        'Snapchat-2128762466.mp4', 'Snapchat-2137956642.mp4'
     ]
 };
 
@@ -353,22 +322,20 @@ function initConfetti() {
 let bgItems = [];
 
 function initCarousel() {
-    // Combine and shuffle
+    // Convert to item format
     const photos = MEDIA_FILES.photos.map(f => ({ file: f, type: 'photo' }));
-    const videos = MEDIA_FILES.videos.map(f => ({ file: f, type: 'video' }));
-    allMediaItems = shuffleArray([...photos, ...videos]);
+    allMediaItems = shuffleArray(photos);
     filteredItems = [...allMediaItems];
     carouselIndex = 0;
 
     renderCarousel();
-    setupFilters();
     setupCarouselControls();
     startCarouselAutoPlay();
     initGalleryBackground();
 }
 
 function initGalleryBackground() {
-    const bgContainer = document.getElementById('gallery-background');
+    const bgContainer = document.getElementById('global-background');
     if (!bgContainer) return;
     
     // We will maintain 4 floating background items
@@ -385,23 +352,10 @@ function spawnBgItem(container) {
     // Pick a random media item
     const item = filteredItems[Math.floor(Math.random() * filteredItems.length)];
     
-    let el;
-    if (item.type === 'photo') {
-        el = document.createElement('img');
-        el.src = `media/${item.file}`;
-    } else {
-        el = document.createElement('video');
-        el.src = `media/${item.file}`;
-        el.muted = true;
-        el.loop = true;
-        el.playsInline = true;
-        el.setAttribute('playsinline', '');
-        el.setAttribute('webkit-playsinline', '');
-        // Only play if it's a video
-        el.play().catch(() => {});
-    }
+    let el = document.createElement('img');
+    el.src = `media/${item.file}`;
     
-    el.className = 'gallery-bg-item';
+    el.className = 'global-bg-item';
     
     // Randomize position and rotation
     const left = 10 + Math.random() * 60; // 10% to 70%
@@ -453,29 +407,11 @@ function renderCarousel() {
         card.className = 'carousel-card';
         card.dataset.index = index;
 
-        if (item.type === 'photo') {
-            const img = document.createElement('img');
-            img.src = `media/${item.file}`;
-            img.alt = 'Memory with Rashi';
-            img.loading = index < 6 ? 'eager' : 'lazy';
-            card.appendChild(img);
-        } else {
-            const video = document.createElement('video');
-            video.src = `media/${item.file}`;
-            video.muted = true;
-            video.loop = true;
-            video.preload = index < 6 ? 'auto' : 'metadata';
-            video.playsInline = true;
-            video.setAttribute('playsinline', '');
-            video.setAttribute('webkit-playsinline', '');
-            card.appendChild(video);
-
-            // Small play icon badge
-            const playIcon = document.createElement('div');
-            playIcon.className = 'card-play-icon';
-            playIcon.innerHTML = `<svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>`;
-            card.appendChild(playIcon);
-        }
+        const img = document.createElement('img');
+        img.src = `media/${item.file}`;
+        img.alt = 'Memory with Rashi';
+        img.loading = index < 6 ? 'eager' : 'lazy';
+        card.appendChild(img);
 
         // Click opens lightbox
         card.addEventListener('click', () => openLightbox(index));
@@ -511,19 +447,6 @@ function updateCarouselPosition() {
     const centerIndex = carouselIndex + Math.floor(visibleCards / 2);
     cards.forEach((c, i) => {
         c.classList.toggle('center', i === centerIndex);
-    });
-
-    // Auto-play visible videos, pause others
-    cards.forEach((c, i) => {
-        const video = c.querySelector('video');
-        if (!video) return;
-        const isVisible = i >= carouselIndex && i < carouselIndex + visibleCards;
-        if (isVisible) {
-            video.play().catch(() => {});
-        } else {
-            video.pause();
-            video.currentTime = 0;
-        }
     });
 
     // Update counter
@@ -604,30 +527,7 @@ function resetAutoPlay() {
     startCarouselAutoPlay();
 }
 
-function setupFilters() {
-    const buttons = document.querySelectorAll('.filter-btn');
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
 
-            const filter = btn.dataset.filter;
-            currentFilter = filter;
-
-            if (filter === 'all') {
-                filteredItems = [...allMediaItems];
-            } else if (filter === 'photos') {
-                filteredItems = allMediaItems.filter(i => i.type === 'photo');
-            } else {
-                filteredItems = allMediaItems.filter(i => i.type === 'video');
-            }
-
-            carouselIndex = 0;
-            renderCarousel();
-            resetAutoPlay();
-        });
-    });
-}
 
 // ============ LIGHTBOX ============
 function openLightbox(index) {
@@ -662,19 +562,10 @@ function renderLightboxContent(index) {
 
     content.innerHTML = '';
 
-    if (item.type === 'photo') {
-        const img = document.createElement('img');
-        img.src = `media/${item.file}`;
-        img.alt = 'Memory';
-        content.appendChild(img);
-    } else {
-        const video = document.createElement('video');
-        video.src = `media/${item.file}`;
-        video.controls = true;
-        video.playsInline = true;
-        video.autoplay = true;
-        content.appendChild(video);
-    }
+    const img = document.createElement('img');
+    img.src = `media/${item.file}`;
+    img.alt = 'Memory';
+    content.appendChild(img);
 
     counter.textContent = `${index + 1} / ${filteredItems.length}`;
 }
